@@ -76,6 +76,21 @@ Data structure is build considering the Binary Tree Structure
   ``./gradlew bootrun``
 - Access the Swagger UI by ``http://localhost:8080/swagger-ui/index.html#``
 
+# Local environment setup [Docker]
+- Pre Requisites:
+
+  ```
+  1. Install java 11
+  2. Install docker
+  ```
+
+- Run following command to build and start the application
+
+  ``docker build --tag=ifelsepredicateparser:latest .``
+
+  ``docker run -p8080:8080 ifelsepredicateparser:latest``
+- Access the Swagger UI by ``http://localhost:8080/swagger-ui/index.html#``
+
 # API Specification
 
 There are 2 APIs are included
