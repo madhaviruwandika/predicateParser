@@ -4,9 +4,7 @@ Java Springboot Application that allow to store simple if-else predicate and all
 
 Current implementation only accept predicate in json format. Parser factory implementation is there for future extension.
 
-# JSON Parser
-
-## example JSON format
+# JSON format
 ```json
 {
 	"properties": {
