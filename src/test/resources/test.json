@@ -1,0 +1,46 @@
+{
+	"properties": {
+		"1": {
+			"type": "String",
+			"name": "a"
+		},
+		"2": {
+			"type": "Integer",
+			"name": "b"
+		}
+	},
+	"logic": {
+		"if": {
+			"operator" : "AND",
+			"operands" : [
+				{
+					"inputId": 1,
+					"operator": "EQUAL",
+					"value": "abc"
+				},
+				{
+					"inputId": 2,
+					"operator": "EQUAL",
+					"value": 4
+				}
+			]
+		},
+		"result": true,
+		"else": {
+			"if": {
+				"operator" : "AND",
+				"operands" :  [
+					{
+						"inputId": 2,
+						"operator": "LESS_THAN",
+						"value": 10
+					}
+				]
+			},
+			"result":  true,
+			"else": {
+				"result": false
+			}
+		}
+	}
+}
