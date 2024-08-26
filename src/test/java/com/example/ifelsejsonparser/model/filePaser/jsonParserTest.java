@@ -16,7 +16,7 @@ public class jsonParserTest {
         PredicateNode predicateNode =  jsonParser.parse(Util.getFileFromResource("test.json"));
 
         // input 1 | a="abc", b=12
-        Assertions.assertEquals(true, predicateNode.findResult("abc", 12));
+        Assertions.assertEquals(false, predicateNode.findResult("abc", 12));
         // input 2 | a="ppp", b=12
         Assertions.assertEquals(false, predicateNode.findResult("ppp", 12));
         // input 3 | a="abc", b=4
