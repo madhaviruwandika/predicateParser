@@ -23,14 +23,14 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.14.3'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7.1'
 
-	compileOnly 'org.projectlombok:lombok:1.18.12'
+	compileOnly 'org.projectlombok:lombok:1.18.28'
 
-	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+	annotationProcessor 'org.projectlombok:lombok:1.18.28'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
