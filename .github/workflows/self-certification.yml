@@ -1,13 +1,10 @@
 name: self-certification
 
 on:
-  #Trigger the workflow on push from the main branch
   push:
-    branches:
-      - [main]
+    branches: [main]
   pull_request:
     branches: [main]
-  #Manually trigger workflow runs
   workflow_dispatch:
 
 
