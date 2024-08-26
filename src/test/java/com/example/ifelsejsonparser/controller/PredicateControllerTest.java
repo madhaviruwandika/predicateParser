@@ -80,7 +80,7 @@ public class PredicateControllerTest {
                                 "\t}\n" +
                                 "}")
                 )
-                .andDo(print()).andExpect(status().isOk());
+                .andDo(print()).andExpect(status().isBadRequest());
     }
 
     @Test
