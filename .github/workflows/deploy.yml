@@ -56,7 +56,7 @@ jobs:
           REPOSITORY: predicate-parser
           IMAGE_TAG: ${{ env.COMMIT_SHORT_SHA }}
         run: |
-          docker build --tag=ifelsepredicateparser:latest .
+          docker build --tag=ifelsepredicateparser:latest
           docker tag ifelsepredicateparser:latest $REGISTRY/$REPOSITORY:$IMAGE_TAG
           docker tag ifelsepredicateparser:latest $REGISTRY/$REPOSITORY:latest
           docker push --all-tags $REGISTRY/$REPOSITORY
