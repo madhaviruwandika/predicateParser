@@ -4,8 +4,8 @@ provider "aws" {
   secret_key = var.aws_secret_key
 }
 
-resource "aws_instance" "spring_boot_container" {
-  ami           = "ami-0c55b159cbfafe1f0"  # Example Amazon Linux 2 AMI
+resource "aws_instance" "padicate_parser" {
+  ami           = "ami-0182f373e66f89c85"  # Example Amazon Linux 2 AMI
   instance_type = "t2.micro"  # Choose your instance type
   key_name      = var.key_name  # SSH Key Pair
 
@@ -31,7 +31,7 @@ resource "aws_instance" "spring_boot_container" {
   EOF
 
   tags = {
-    Name = "SpringBootContainer"
+    Name = "predicate_parcer_instance"
   }
 
   # Security Group for SSH and HTTP access
