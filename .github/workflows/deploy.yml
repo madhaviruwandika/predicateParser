@@ -72,6 +72,7 @@ jobs:
       ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
       SSH_KEY_NAME: ${{ secrets.SSH_KEY_NAME }}
 
+    steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
