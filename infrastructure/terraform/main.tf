@@ -64,5 +64,5 @@ resource "aws_security_group" "allow_ssh_http" {
 }
 
 output "instance_public_ip" {
-  value = aws_instance.spring_boot_container.public_ip
+  value = aws_instance.padicate_parser.public_ip
 }
