@@ -4,81 +4,14 @@ provider "aws" {
   secret_key = var.aws_secret_key
 }
 
-# Data source to check if the IAM role exists
-data "aws_iam_role" "existing_role" {
-  name = "ec2_role"
-}
-
-# Create IAM Role for EC2 to access ECR
-resource "aws_iam_role" "ec2_role" {
-  count = length([for v in [data.aws_iam_role.existing_role.arn] : v if v == "" ? "create" : "skip"])
-
-  name = "ec2-ecr-access-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Effect = "Allow",
-      Principal = {
-        Service = "ec2.amazonaws.com"
-      },
-      Action = "sts:AssumeRole"
-    }]
-  })
-}
-
-
-# Data source to check if the IAM policy exists
-data "aws_iam_policy" "existing_policy" {
-  arn = "arn:aws:iam::${var.aws_account_id}:policy/ECRFullAccessPolicy"
-}
-
-# Create ECR Access Policy
-resource "aws_iam_policy" "ecr_access_policy" {
-  count = length([for v in [data.aws_iam_policy.existing_policy.arn] : v if v == "" ? "create" : "skip"])
-
-  name = "ECRFullAccessPolicy"
-
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect   = "Allow",
-        Action   = [
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:BatchGetImage",
-          "ecr:BatchCheckLayerAvailability"
-        ],
-        Resource = "*"
-      },
-      {
-        Effect   = "Allow",
-        Action   = "ecr:GetAuthorizationToken",
-        Resource = "*"
-      },
-      {
-        Effect   = "Allow",
-        Action   = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ],
-        Resource = "*"
-      }
-    ]
-  })
-}
+terraform import aws_iam_role.ec2_role ec2-ecr-access-role
+terraform import aws_iam_policy.aws_iam_instance_profile ec2-ecr-instance-profile
+terraform import aws_iam_policy.ecr_access_policy ECRFullAccessPolicy
 
 # Attach the ECR policy to the role
 resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = aws_iam_policy.ecr_access_policy.arn
-}
-
-# Create IAM Instance Profile for EC2
-resource "aws_iam_instance_profile" "ec2_instance_profile" {
-  name = "ec2-ecr-instance-profile"
-  role = aws_iam_role.ec2_role.name
 }
 
 # Create Security Group
