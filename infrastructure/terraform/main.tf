@@ -4,8 +4,15 @@ provider "aws" {
   secret_key = var.aws_secret_key
 }
 
+# Data source to check if the IAM role exists
+data "aws_iam_role" "existing_role" {
+  name = "ec2_role"
+}
+
 # Create IAM Role for EC2 to access ECR
 resource "aws_iam_role" "ec2_role" {
+  count = length([for v in [data.aws_iam_role.existing_role.arn] : v if v == "" ? "create" : "skip"])
+
   name = "ec2-ecr-access-role"
 
   assume_role_policy = jsonencode({
@@ -20,8 +27,16 @@ resource "aws_iam_role" "ec2_role" {
   })
 }
 
+
+# Data source to check if the IAM policy exists
+data "aws_iam_policy" "existing_policy" {
+  arn = "arn:aws:iam::${var.aws_account_id}:policy/ECRFullAccessPolicy"
+}
+
 # Create ECR Access Policy
 resource "aws_iam_policy" "ecr_access_policy" {
+  count = length([for v in [data.aws_iam_policy.existing_policy.arn] : v if v == "" ? "create" : "skip"])
+
   name = "ECRFullAccessPolicy"
 
   policy = jsonencode({
