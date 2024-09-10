@@ -4,10 +4,6 @@ provider "aws" {
   secret_key = var.aws_secret_key
 }
 
-terraform import aws_iam_role.ec2_role arn:aws:iam::${var.aws_account_id}:role/ec2-ecr-access-role
-terraform import aws_iam_policy.aws_iam_instance_profile arn:aws:iam::430118832703:instance-profile/ec2-ecr-instance-profile
-terraform import aws_iam_policy.ecr_access_policy arn:aws:iam::${var.aws_account_id}:policy/ECRFullAccessPolicy
-
 # Attach the ECR policy to the role
 resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
   role       = aws_iam_role.ec2_role.name
