@@ -82,6 +82,12 @@ jobs:
       run: terraform init
       working-directory: ./infrastructure/terraform
 
+    - name: Terraform imports
+      run: |
+        terraform import aws_iam_role.ec2_role arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/ec2-ecr-access-role
+        terraform import aws_iam_policy.aws_iam_instance_profile arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:instance-profile/ec2-ecr-instance-profile
+        terraform import aws_iam_policy.ecr_access_policy arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:policy/ECRFullAccessPolicy
+
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: ./infrastructure/terraform
