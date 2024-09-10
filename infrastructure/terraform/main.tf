@@ -1,13 +1,111 @@
 provider "aws" {
-  region = var.aws_region
+  region     = var.aws_region
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
 }
 
+# Create IAM Role for EC2 to access ECR
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2-ecr-access-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      },
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+# Create ECR Access Policy
+resource "aws_iam_policy" "ecr_access_policy" {
+  name = "ECRFullAccessPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability"
+        ],
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow",
+        Action   = "ecr:GetAuthorizationToken",
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow",
+        Action   = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# Attach the ECR policy to the role
+resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.ecr_access_policy.arn
+}
+
+# Create IAM Instance Profile for EC2
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
+  name = "ec2-ecr-instance-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
+# Create Security Group
+resource "aws_security_group" "allow_ssh_http" {
+  name_prefix = "allow_ssh_http"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# EC2 Instance with IAM Role attached for ECR access
 resource "aws_instance" "padicate_parser" {
-  ami           = "ami-0182f373e66f89c85"  # Example Amazon Linux 2 AMI
-  instance_type = "t2.micro"  # Choose your instance type
-  key_name      = var.key_name  # SSH Key Pair
+  ami                         = "ami-0182f373e66f89c85"  # Example Amazon Linux 2 AMI
+  instance_type               = "t2.micro"  # Choose your instance type
+  key_name                    = var.key_name  # SSH Key Pair
+  iam_instance_profile        = aws_iam_instance_profile.ec2_instance_profile.name
+  vpc_security_group_ids      = [aws_security_group.allow_ssh_http.id]
 
   user_data = <<-EOF
     #!/bin/bash
@@ -31,35 +129,7 @@ resource "aws_instance" "padicate_parser" {
   EOF
 
   tags = {
-    Name = "predicate_parcer_instance"
-  }
-
-  # Security Group for SSH and HTTP access
-  vpc_security_group_ids = [aws_security_group.allow_ssh_http.id]
-}
-
-resource "aws_security_group" "allow_ssh_http" {
-  name_prefix = "allow_ssh_http"
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    Name = "predicate_parser_instance"
   }
 }
 
