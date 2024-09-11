@@ -5,7 +5,7 @@ Java Springboot Application that allow to store simple if-else predicate and all
 ### use case
 Consider a typical If-Statement in a programming language. For example:
 
-```json
+```
 If (a == “abc” && b > 4) 
 	then true 
 else if (b < 10) 
