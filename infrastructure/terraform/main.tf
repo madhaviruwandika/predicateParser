@@ -4,11 +4,6 @@ provider "aws" {
   secret_key = var.aws_secret_key
 }
 
-# Attach the ECR policy to the role
-resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
-  role       = aws_iam_role.ec2_role.name
-  policy_arn = aws_iam_policy.ecr_access_policy.arn
-}
 
 # Create Security Group
 resource "aws_security_group" "allow_ssh_http" {
@@ -41,7 +36,7 @@ resource "aws_instance" "padicate_parser" {
   ami                         = "ami-0182f373e66f89c85"  # Example Amazon Linux 2 AMI
   instance_type               = "t2.micro"  # Choose your instance type
   key_name                    = var.key_name  # SSH Key Pair
-  iam_instance_profile        = aws_iam_instance_profile.ec2_instance_profile.name
+  iam_instance_profile        = data.aws_iam_instance_profile.existing_role.name
   vpc_security_group_ids      = [aws_security_group.allow_ssh_http.id]
 
   user_data = <<-EOF
