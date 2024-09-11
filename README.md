@@ -2,9 +2,19 @@
 
 Java Springboot Application that allow to store simple if-else predicate and allow to do evaluation with that by providing different inputs
 
-Current implementation only accept predicate in json format. Parser factory implementation is there for future extension.
+### use case
+Consider a typical If-Statement in a programming language. For example:
 
-# JSON format
+```json
+If (a == “abc” && b > 4) 
+	then true 
+else if (b < 10) 
+	then true
+else false
+```
+
+Above should be represented in JSON format as in the following
+
 ```json
 {
 	"properties": {
@@ -54,7 +64,17 @@ Current implementation only accept predicate in json format. Parser factory impl
 }
 ```
 
-Current implementation covers only 2 inputs (a,b). "properties" attribute is introduced to support more attributes. 
+This Rest API contains 2 endpoints;
+- Rest Api contains endpoint for uploading predicate and store in json file inside service. This was implemented as a simple example. So that decided to store in a file. To make this scalable, consistent and distributed solution that runs in concurrent environment needs to consider integrating proper data source.
+
+- Rest Api contains endpoint to provide inputs and get the evaluated result against pre-stored predicate
+
+
+### Notes
+- Current implementation only accept predicate in json format. Parser factory implementation is there for future extension.
+- Current implementation covers only 2 inputs (a,b). "properties" attribute is introduced to support more attributes.
+- Implementation of Request Parameter Validation was not completed. 
+- predicate json string need to be validated to  check it has the correct schema 
 
 ## Data structure for the JSON representation
 
@@ -89,6 +109,11 @@ Data structure is build considering the Binary Tree Structure
   ``docker run -p8080:8080 ifelsepredicateparser:latest``
 - Access the Swagger UI by ``http://localhost:8080/swagger-ui/index.html#``
 
+# CI/CD Integration
+
+- Github workflow is configured to deploy the service to AWS EC2 (code : `.github/workflows`)
+- Terraform is used for provisioning resources (code: `infrastructure/terraform`)
+
 # API Specification
 
 There are 2 APIs are included
@@ -97,7 +122,3 @@ There are 2 APIs are included
  
 Swagger 3 is integrated. For API documentation 
      - URL : http://localhost:8080/swagger-ui/index.html
-
-# Notes
-* Implementation of Request Parameter Validation was not completed. 
-  * predicate json string need to be validated to  check it has the correct schema
