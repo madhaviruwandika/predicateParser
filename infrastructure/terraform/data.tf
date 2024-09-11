@@ -4,7 +4,7 @@ data "aws_iam_instance_profile" "existing_role" {
 
 data "aws_security_group" "existing_sg" {
   filter {
-    name   = "allow_ssh_http"
+    name   = "group-name"
     values = ["allow_ssh_http"]
   }
 
