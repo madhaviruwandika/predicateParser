@@ -93,3 +93,4 @@ jobs:
         TF_VAR_aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
         TF_VAR_ecr_repository: predicate-parser
         TF_VAR_key_name: ${{ secrets.SSH_KEY_NAME }}
+        TF_VAR_ec2_role_name: ${{ secrets.EC2_ROLE_NAME }}

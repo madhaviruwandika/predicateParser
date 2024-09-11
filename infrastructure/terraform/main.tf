@@ -7,7 +7,7 @@ provider "aws" {
 
 # Create Security Group
 resource "aws_security_group" "allow_ssh_http" {
-  name_prefix = "allow_ssh_http"
+  name = "allow_ssh_http"
 
   ingress {
     from_port   = 22
