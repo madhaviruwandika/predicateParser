@@ -1,8 +1,20 @@
-# Predicate Parser
 
+<div align="center">
+  <img src="https://github.com/devicons/devicon/blob/master/icons/java/java-original-wordmark.svg" title="Java" alt="Java" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/spring/spring-original-wordmark.svg" title="Spring Boot" alt="Spring Boot" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" title="AWS" alt="AWS EC2, ECR, IAM" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/docker/docker-original.svg" title="Doker" alt="Docker" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/terraform/terraform-original.svg" title="Terraform" alt="Terraform" width="40" height="40"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/githubactions/githubactions-original.svg" title="Github Actions" **alt="Github Actions" width="40" height="40"/>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/gradle/gradle-original.svg" title="Gradle" **alt="Gradle" width="40" height="40"/>
+</div>
+</br>
+
+<p>
 Java Springboot Application that allow to store simple if-else predicate and allow to do evaluation with that by providing different inputs
+</p>
 
-### use case
+# usecase
 Consider a typical If-Statement in a programming language. For example:
 
 ```
@@ -70,13 +82,13 @@ This Rest API contains 2 endpoints;
 - Rest Api contains endpoint to provide inputs and get the evaluated result against pre-stored predicate
 
 
-### Notes
+# Notes
 - Current implementation only accept predicate in json format. Parser factory implementation is there for future extension.
 - Current implementation covers only 2 inputs (a,b). "properties" attribute is introduced to support more attributes.
 - Implementation of Request Parameter Validation was not completed. 
 - predicate json string need to be validated to  check it has the correct schema 
 
-## Data structure for the JSON representation
+# Data structure for the JSON representation
 
 Data structure is build considering the Binary Tree Structure
 
