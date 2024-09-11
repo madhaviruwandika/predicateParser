@@ -7,7 +7,10 @@ provider "aws" {
 
 # Create Security Group
 resource "aws_security_group" "allow_ssh_http" {
+  count = length(data.aws_security_group.existing_sg.id) == 0 ? 1 : 0
+
   name = "allow_ssh_http"
+  vpc_id = "vpc-025544307726fbc15"
 
   ingress {
     from_port   = 22
@@ -37,7 +40,7 @@ resource "aws_instance" "padicate_parser" {
   instance_type               = "t2.micro"  # Choose your instance type
   key_name                    = var.key_name  # SSH Key Pair
   iam_instance_profile        = data.aws_iam_instance_profile.existing_role.name
-  vpc_security_group_ids      = [aws_security_group.allow_ssh_http.id]
+  vpc_security_group_ids      = coalesce([data.aws_security_group.existing_sg.id,aws_security_group.allow_ssh_http.id])
 
   user_data = <<-EOF
     #!/bin/bash
