@@ -40,7 +40,7 @@ resource "aws_instance" "padicate_parser" {
   instance_type               = "t2.micro"  # Choose your instance type
   key_name                    = var.key_name  # SSH Key Pair
   iam_instance_profile        = data.aws_iam_instance_profile.existing_role.name
-  vpc_security_group_ids      = coalesce([data.aws_security_group.existing_sg.id],[aws_security_group.allow_ssh_http[0].id])
+  vpc_security_group_ids      = length(data.aws_security_group.existing_sg.id) > 0 ? [data.aws_security_group.existing_sg.id] : [aws_security_group.allow_ssh_http[0].id]
 
   user_data = <<-EOF
     #!/bin/bash
